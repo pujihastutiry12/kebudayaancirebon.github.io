@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jelajahi Warisan Cirebon</title>
+  <style>
+    :root {
+      --primary: #13324A;
+      --accent: #6FB2FF;
+      --soft: #F2F6FA;
+      --ink: #1b2b38;
+      --radius: 18px;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+    * {
+      margin:0;
+      padding:0;
+      box-sizing: border-box;
+    }
+
+    body {
+  width: 100%;
+  overflow-x: hidden;   /* cegah scroll horizontal */
+  overflow-y: auto;     /* biar tetap bisa scroll ke bawah */
+}
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, Arial, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      scroll-behavior: smooth;
+    }
+    a { text-decoration: none; color: inherit }
+
+    /* === NAVIGATION === */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #edf1f6;
+    }
+    .nav-inner {
+      max-width: 1300px;
+      margin: auto;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand img {
+      height: 48px;
+      width: auto;
+    }
+    .nav-center {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .nav-center ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+    .nav-center a {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 500;
+      transition: background .25s ease;
+    }
+    .nav-center a.active,
+    .nav-center a:hover {
+      background: var(--soft);
+    }
+    .cta .btn {
+      background: #e9f3ff;
+      border: 1px solid #dbeaff;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-weight: 600;
+    }
+    .btn:hover { filter: brightness(.97); }
+
+ /* HAMBURGER */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  width: 28px;
+  height: 22px;
+  justify-content: center;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: #333;
+  border-radius: 2px;
+  transition: all 0.4s ease;
+}
+
+/* Saat aktif jadi X */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* MOBILE MENU OVERLAY (versi kecil) */
+.nav-center.mobile {
+  position: fixed;
+  top: 60px; /* di bawah navbar */
+  right: 16px;
+  width: 240px;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.15);
+
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 12px;
+
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: all .35s ease;
+}
+
+.nav-center.mobile.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.nav-center.mobile a {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background .25s ease;
+}
+
+.nav-center.mobile a:hover {
+  background: var(--soft);
+}
+
+/* Tombol Close */
+  .close {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-size: 32px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.2s;
+    }
+
+    .close:hover {
+      color: var(--accent);
+    }
+/* SLIDER GAMBAR DALAM MODAL */
+.modal-slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-slides {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.modal-slides img {
+  min-width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+/* === CLOSE BUTTON (X) === */
+/* Tombol Close di Modal */
+.modal .close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #13324A;
+  cursor: pointer !important;
+  user-select: none;      /* Biar tidak bisa diseleksi teks */
+  transition: color 0.2s;
+}
+
+.modal .close:hover {
+  color: #0d2233;
+}
+
+
+
+/* === SLIDER BUTTONS === */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.25); /* transparan gelap */
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.slider-btn:hover {
+  background: rgba(0,0,0,0.45);
+}
+
+.slider-btn.prev { left: 10px; }
+.slider-btn.next { right: 10px; }
+
+.slider-btn::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-top: 3px solid #fff;
+  border-right: 3px solid #fff;
+}
+
+.slider-btn.prev::before {
+  transform: rotate(-135deg); /* panah kiri */
+}
+
+.slider-btn.next::before {
+  transform: rotate(45deg); /* panah kanan */
+}
+
+/* Tombol Close */
+.mobile-close {
+  align-self: flex-end;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #333;
+}
+    .mobile .btn {
+      background: #6FB2FF;
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-top: 8px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        transition: background 0.3s ease; /* biar halus */
+
+    }
+    
+.mobile .btn:hover {
+  background: #00448d;
+  color: #13324A; /* biar tetap kontras, opsional */
+ }
+    .kategori-budaya {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.box {
+  position: relative;
+  display: block;
+  height: 150px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform .3s ease;
+  text-decoration: none;
+}
+
+.box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* isi full button */
+  display: block;
+}
+
+.box span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: rgba(0,0,0,0.5); /* overlay hitam transparan */
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+}
+
+.box:hover {
+  transform: translateY(-5px);
+}
+    /* === HERO SLIDER === */
+    .hero {
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .slides {
+      position: relative;
+      height: min(70vh, 600px);
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      background: #ddd center/cover no-repeat;
+      opacity: 0;
+      transition: opacity 800ms ease;
+    }
+    .slide.active { opacity: 1; }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.25) 30%,rgba(0,0,0,.35));
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 5%;
+    }
+    .hero-caption {
+      color: #fff;
+      max-width: 520px;
+    }
+    .title-lg {
+      font-size: clamp(22px,3.8vw,40px);
+      font-weight: 800;
+      margin-bottom: 12px;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.9);
+    }
+    .subtitle {
+      font-size: clamp(15px,2.8vw,18px);
+      line-height:1.6;
+      opacity:.9;
+      text-shadow: 0 2px 6px rgba(0,0,0,.7);
+    }
+    .btn-primary {
+      display: inline-block;
+      background: #6FB2FF;
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      margin-top: 16px;
+      font-weight: 600;
+      font-size: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      transition: all 0.25s ease;
+    }
+    .btn-primary:hover {
+      background: #4c95e0;
+      transform: translateY(-2px);
+    }
+    .dots {
+      position: absolute;
+      left: 0; right: 0; bottom: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      cursor: pointer;
+    }
+    .dot.active { background: #fff; }
+
+    /* === GRID UTAMA === */
+    .grid {
+       display: grid;
+    gap: 24px;
+    margin-top: 20px;
+}
+  
+    .grid.two {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      align-items: center;
+    }
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    /* === CARD === */
+    .card {
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: transform .3s ease, box-shadow .3s ease;
+      background: #fff;
+      overflow: hidden;
+    }
+    .card img, .media {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    .media {
+      aspect-ratio: 16/10;
+      background: #e9eef5 center/cover no-repeat;
+    }
+    .card.pad {
+      background: none;
+      box-shadow: none;
+      border: none;
+      padding: 20px;
+    }
+    .card.pad h4,
+    .card.pad p {
+      margin: 0 0 16px 0;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    .card.pad a.btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background .2s ease;
+    }
+    .card.pad a.btn:hover {
+      background: #4c95e0;
+    }
+
+    /* === SECTION === */
+    section {
+      max-width: 1300px;
+      margin: 30px auto;
+      padding: 0 20px;
+      position: relative;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      text-align: left;
+      color: var(--primary);
+    }
+
+    /* MAP */
+    .map {
+      width: 100%;
+      height: 420px;
+      border: 0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 36px 16px 60px;
+      text-align: center;
+      color: #406076;
+    }
+
+    /* Hiasan */
+    .hiasan {
+      position: absolute;
+      z-index: -1;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    
+    .hiasan.left {
+  top: -40px;
+  left: 0;
+  transform: translateX(-40px); /* tidak bikin body melebar */
+        width: 160px;
+    }
+
+   .hiasan.budaya {
+    top: -90px;
+    left: 0;
+    transform: translateX(-40px);
+    width: 160px;
+
+}   
+.hiasan.budaya2 {
+  top: -60px;
+  right: 0;
+  transform: translateX(40px); /* tetap terlihat, tanpa overflow */
+ width: 140px;
+
+}
+.hiasan.budaya3 {
+  top: 30px;
+  right: 0;
+  transform: translateX(40px); /* tetap terlihat, tanpa overflow */
+ width: 140px;
+
+}
+
+.hiasan.right {
+  bottom: -40px;
+  right: 0;
+  transform: translateX(40px); /* tetap terlihat, tanpa overflow */
+        width: 140px;
+
+}
+
+/* ANIMASI HIASAN */
+@keyframes floatX {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(20px); } /* maju */
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(15px); } /* turun */
+}
+
+.hiasan {
+  animation: floatY 6s ease-in-out infinite alternate;
+}
+
+.hiasan.left,
+.hiasan.budaya,
+.hiasan.budaya2,
+.hiasan.budaya3,
+.hiasan.right {
+  animation: floatX 8s ease-in-out infinite alternate;
+}
+
+    /* REVEAL ANIMATION */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: 600ms ease;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* RESPONSIVE */
+  @media (max-width:900px){
+    .nav-center { display:none; } /* sembunyikan menu desktop */
+    .cta { display:none; }        /* sembunyikan learn more desktop */
+    .hamburger { display:flex; }  /* tampilkan hamburger */
+  }
+
+  /* === MODAL POPUP === */
+
+.modal {
+  display: none; /* defaultnya hidden */
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* saat aktif */
+.modal.show {
+  display: flex; /* tampil sebagai flex */
+}
+
+.modal-content {
+background: #fff;
+    border-radius: 16px;
+    max-width: 560px;
+    width: 100%;
+    padding: 15px;
+    position: relative;
+    animation: fadeIn 0.4s ease;
+}
+
+.modal-content h4,
+.modal-content h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 12px 0;
+  text-align: center;
+  color: var(--primary);
+}
+
+.modal-content .p {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 90%;
+  padding: 15px;
+  text-align: left;
+  position: relative;
+  animation: fadeIn 0.4s ease;
+}
+
+/* Atur ukuran gambar dalam modal */
+.modal-content img,
+.modal-slides img {
+  width: 100%;
+  max-height: 400px;   /* batas tinggi agar tidak terlalu besar */
+  object-fit: contain; /* biar gambar tidak ketarik */
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto 16px;
+}
+
+@media (max-width: 600px) {
+  .modal-content img,
+  .modal-slides img {
+    max-height: 250px; /* lebih kecil di HP */
+  }
+}
+
+
+.modal-content h2 {
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+
+.modal-content p {
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+.batik-card {
+  cursor: pointer;              /* tangan saat hover */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.batik-card:hover {
+  transform: translateY(-6px);  /* naik sedikit saat hover */
+  box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+}
+
+
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand"><img src="photo/logo.png" alt="Logo"></a>
+    <div class="nav-center">
+      <ul>
+        <li><a href="dashboard.html">Beranda</a></li>
+        <li><a class= "active" href="budaya.html">Budaya</a></li>
+        <li><a href="event.html">Event</a></li>
+        <li><a href="galery.html">Galeri</a></li>
+      </ul>
+    </div>
+    <!-- CTA hanya tampil desktop -->
+    <div class="cta"><a class="btn" href="learn.html">Learn More</a></div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="nav-center mobile" id="mobileMenu">
+        <a href="dashboard.html">Budaya</a>
+    <a href="budaya.html">Budaya</a>
+    <a href="event.html">Event</a>
+    <a href="galery.html">Galeri</a>
+    <a class="btn" href="learn.html">Learn More</a> <!-- masuk ke hamburger -->
+  </div>
+
+</nav>
+
+  <!-- HERO SLIDER -->
+  <header id="beranda" class="hero reveal">
+    <div class="slides" id="slides">
+    <div class="slide active" style="background-image:url('photo/BATIK.png')"></div>
+
+      <div class="hero-overlay">
+        <div class="hero-caption">
+          <h1 class="title-lg">Batik</h1>
+          <p class="subtitle">Menelusuri jejak perkembangan Cirebon dari masa kerajaan hingga modern</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+<!-- BAGIAN GRID / CARD -->
+<section id="batik" class="reveal">
+  <h3 class="section-title">BATIK CIREBON</h3>
+  <div class="grid three">
+
+    <!-- Mega Mendung -->
+    <div class="card batik-card" data-modal="modal-mega">
+      <div class="media" style="background-image:url('photo/mega_mendung_batik.jpg')" aria-label="Batik Mega Mendung"></div>
+      <div class="card pad">
+        <h4>Mega Mendung</h4>
+        <p>Motif awan berlapis-lapis, simbol kesabaran dan ketenangan.</p>
+      </div>
+    </div>
+
+    <!-- Singa Barong -->
+    <div class="card batik-card" data-modal="modal-singa">
+      <div class="media" style="background-image:url('photo/batik_cirebon_singa_barong.jpg')" aria-label="Batik Singa Barong"></div>
+      <div class="card pad">
+        <h4>Singa Barong</h4>
+        <p>Terinspirasi dari Kereta Singa Barong. Motif ini melambangkan pemimpin yang ideal, kuat, dan bijaksana.</p>
+      </div>
+    </div>
+
+    <!-- Wadasan -->
+    <div class="card batik-card" data-modal="modal-wadasan">
+      <div class="media" style="background-image:url('photo/Metra_wadasan_batik.jpg')" aria-label="Batik Wadasan"></div>
+      <div class="card pad">
+        <h4>Wadasan</h4>
+        <p>Motif Wadasan menggambarkan tumpukan bebatuan karang yang sering ditemui di wilayah pesisir.</p>
+      </div>
+    </div>
+
+    <!-- Paksi Naga Liman -->
+    <div class="card batik-card" data-modal="modal-paksi">
+      <div class="media" style="background-image:url('photo/batik_paksi_naga_liman.jpg')" aria-label="Batik Paksi Naga Liman"></div>
+      <div class="card pad">
+        <h4>Paksi Naga Liman</h4>
+        <p>Motif ini berasal dari nama sebuah kereta kencana kebesaran milik Keraton Kasepuhan Cirebon, Motif ini sarat dengan makna religius dan historis.</p>
+      </div>
+    </div>
+
+    <!-- Patran Keris -->
+    <div class="card batik-card" data-modal="modal-patran">
+      <div class="media" style="background-image:url('photo/Batik_Cirebon_Patran_Keris.jpg')" aria-label="Batik Patran Keris"></div>
+      <div class="card pad">
+        <h4>Patran Keris</h4>
+        <p>Motif ini berasal dari nama sebuah kereta kencana kebesaran milik Keraton Kasepuhan Cirebon, Motif ini sarat dengan makna religius dan historis.</p>
+      </div>
+    </div>
+
+    <!-- Sawat Pengantin Cirebon -->
+    <div class="card batik-card" data-modal="modal-sawat">
+      <div class="media" style="background-image:url('photo/batik_cirebon_sawat_pengantin.jpg')" aria-label="Batik Sawat Pengantin"></div>
+      <div class="card pad">
+        <h4>Sawat Pengantin Cirebon</h4>
+        <p> motif batik khas Cirebon yang sering dikenakan oleh pengantin dalam upacara pernikahan.</p>
+      </div>
+    </div>
+
+    
+    <!-- Kompeni Batik -->
+      <div class="card batik-card" data-modal="modal-kompeni">
+      <div class="media" style="background-image:url('photo/batik-cirebon-motif-kompeni.jpg')" aria-label="Batik Kompeni"></div>
+      <div class="card pad">
+        <h4>Kompeni Batik</h4>
+        <p>Batik Kompeni terinspirasi dari era kolonial Belanda, melambangkan akulturasi budaya yang unik di Cirebon.</p>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+<!-- ============ MODAL BATIK ============ -->
+
+<!-- Modal Mega Mendung -->
+<div id="modal-mega" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-slider">
+      <h2>Batik Mega Mendung</h2>
+      <div class="modal-slides">
+        <img src="photo/mega_mendung_batik.jpg" alt="Batik Mega Mendung 1"/>
+        <img src="photo/mega_mendung.png" alt="Batik Mega Mendung 2"/>
+        <img src="photo/kain_batik.jpg" alt="Batik Mega Mendung 3"/>
+      </div>
+      <button class="slider-btn prev"></button>
+      <button class="slider-btn next"></button>
+    </div>
+<p>Motif batik yang berasal dari Cirebon, Jawa Barat, yang terinspirasi dari bentuk awan tebal saat mendung. Motif ini memiliki ciri khas pola awan berlapis-lapis dengan gradasi warna yang kaya makna.<br> Motif mega mendung tidak hanya sekadar hiasan, tetapi juga menyimpan filosofi mendalam tentang kesabaran, ketenangan, dan harapan akan turunnya hujan yang membawa kesuburan. </p>
+  </div>
+</div>
+
+<!-- Modal Singa Barong -->
+<div id="modal-singa" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-slider">
+      <h2>Batik Singa Barong</h2>
+      <div class="modal-slides">
+        <img src="photo/batik_cirebon_singa_barong.jpg" alt="Batik Singa Barong 1"/>
+      </div>
+    </div>
+    <p>Batik Singa Barong Cirebon adalah motif batik khas Cirebon yang menggambarkan makhluk mitologis bernama Singa Barong, yang merupakan gabungan dari berbagai hewan buas seperti singa, naga, dan burung garuda. <br>
+      Motif ini memiliki nilai historis dan filosofis tinggi, melambangkan kekuatan, keberanian, dan kewibawaan, serta berkaitan erat dengan sejarah Kesultanan Cirebon. </p>
+  </div>
+</div>
+
+<!-- Modal Wadasan -->
+<div id="modal-wadasan" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-slider">
+      <h2>Batik Wadasan</h2>
+      <div class="modal-slides">
+        <img src="photo/Metra_wadasan_batik2.jpg" alt="Batik Wadasan 1"/>
+        <img src="photo/Metra-wadasan-ati.jpg" alt="Batik Wadasan 2"/>
+        <img src="photo/wadasan_crb.jpg" alt="Batik Wadasan 3"/>
+      </div>
+      <button class="slider-btn prev"></button>
+      <button class="slider-btn next"></button>
+    </div>
+<p>Motif Batik Wadasan
+Motif batik Wadasan adalah batik khas Cirebon yang terinspirasi dari batu karang. Nama motif ini berasal dari kata "wadas" dalam bahasa Cirebon yang berarti batu.<br> 
+Motif Wadasan melambangkan kekuatan, keteguhan, dan kepatuhan kepada Tuhan.</p>
+ </div>
+</div>
+
+<!-- Modal Paksi Naga Liman -->
+<div id="modal-paksi" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-slider">
+      <h2>Batik Paksi Naga Liman</h2>
+      <div class="modal-slides">
+        <img src="photo/batik_paksi_naga_liman.jpg" alt="Batik Paksi Naga Liman 1"/>
+      </div>
+
+    </div>
+<p>Motif batik ini menggambarkan gabungan tiga makhluk mitologi: paksi (burung), naga, dan liman (gajah), yang mewakili kekuatan udara, laut, dan darat serta melambangkan kebijaksanaan, kekuatan, dan keagungan. <br> Motif ini juga terinspirasi dari kereta kencana Paksi Naga Liman yang ada di Keraton Cirebon dan digunakan sebagai simbol kekuasaan.</p>
+  </div>
+</div>
+
+<!-- Modal Patran Keris -->
+<div id="modal-patran" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-slider">
+      <h2>Batik Patran Keris</h2>
+      <div class="modal-slides">
+        <img src="photo/Batik_Cirebon_Patran_Keris.jpg" alt="Batik Patran Keris 1"/>
+      </div>
+    </div>
+    <p>Batik Patran Keris adalah salah satu motif batik klasik Cirebon yang simpel namun elegan, memiliki ciri khas warna coklat gelap dan hitam, serta tidak banyak menggunakan ornamen tambahan. <br>
+       Motif ini menggambarkan sejarah dan budaya Cirebon yang kuat, di mana keris adalah simbol kekuasaan dan kekuatan, sedangkan "patran" diyakini melambangkan keberuntungan dan kebahagiaan. </p>
+    <p>Motif Patran Keris terinspirasi dari bentuk keris, melambangkan keberanian, kehormatan, dan kekuatan spiritual.</p>
+  </div>
+</div>
+
+<!-- Modal Sawat Pengantin -->
+<div id="modal-sawat" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-slider">
+      <h2>Batik Sawat Pengantin</h2>
+      <div class="modal-slides">
+        <img src="photo/batik_cirebon_sawat_pengantin.jpg" alt="Batik Sawat Pengantin 1"/>
+      </div>
+    </div>
+    <p>motif batik khas Cirebon yang sering dikenakan oleh pengantin dalam upacara pernikahan karena melambangkan perlindungan, restu, dan keberanian untuk kehidupan berumah tangga. <br>
+      Kata "sawat" berarti "sayap" dan motif ini terinspirasi dari bentuk sayap Garuda, memiliki simbol kekuatan dan pelindung dalam mitologi Hindu. <br>
+      Motif ini juga memiliki makna filosofis tentang keseimbangan antara alam mikrokosmos (manusia) dan makrokosmos (semesta), serta harapan akan keharmonisan dan kesuksesan dalam pernikahan.</p>
+  </div>
+</div>
+
+
+<!-- Modal Kompeni Batik -->
+<div id="modal-kompeni" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-slider">
+      <h2>Batik Kompeni</h2>
+      <div class="modal-slides">
+        <img src="photo/batik-cirebon-motif-kompeni.jpg" alt="Batik Kompeni 1"/>
+      </div>
+    </div>
+    <p>Batik Kompeni adalah salah satu motif batik yang muncul pada masa kolonial Belanda. Nama "Kompeni" diambil dari sebutan masyarakat Jawa untuk VOC atau pemerintah Hindia Belanda. Motif ini merupakan bukti dari akulturasi budaya yang terjadi di daerah pesisir. Para pengrajin batik di sana mulai mengabadikan pemandangan dari kehidupan sehari-hari di bawah kekuasaan Belanda ke dalam karya mereka.</p>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.modal').forEach(modal => {
+  const slides = modal.querySelector('.modal-slides');
+  if (!slides) return;
+  const images = modal.querySelectorAll('.modal-slides img');
+  let index = 0;
+
+  const prevBtn = modal.querySelector('.slider-btn.prev');
+  const nextBtn = modal.querySelector('.slider-btn.next');
+
+  function showSlide(i) {
+    if (i < 0) index = images.length - 1;
+    else if (i >= images.length) index = 0;
+    else index = i;
+    slides.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => showSlide(index - 1));
+    nextBtn.addEventListener('click', () => showSlide(index + 1));
+  }
+});
+</script>
+</section>
+
+
+<!-- TOKO BATIK -->
+<section id="toko-batik" class="reveal">
+  <img src="overlayss.png" alt="hiasan" class="hiasan budaya2">
+  <h3 class="section-title">TOKO BATIK DI CIREBON</h3>
+  <P>Setiap oleh-oleh adalah kisah perjalanan dari Cirebon.</P>
+  <div class="grid three">
+
+    <!-- Batik Trusmi -->
+    <div class="card">
+      <div class="media" style="background-image:url('photo/trusmi.png')" aria-label="Trusmi"></div>
+      <div class="card pad">
+        <h4>Kawasan Batik Trusmi</h4>
+        <p>pusat industri batik di Kabupaten Cirebon, Jawa Barat, sekaligus sebagai tempat wisata seni batik dan kuliner.</p>
+        <a class="btn" target="_blank" href="https://maps.google.com?q=Batik+Trusmi+Cirebon">Lihat Lokasi</a>
+      </div>
+    </div>
+
+
+    <!-- Central Batik -->
+    <div class="card">
+      <div class="media" style="background-image:url('photo/Batik_Trusmi.jpg')" aria-label="BT Batik Trusmi"></div>
+      <div class="card pad">
+        <h4>BT Batik Trusmi</h4>
+        <p>Jl. Trusmi No.148, Weru Lor, Kec. Plered, Kabupaten Cirebon</p>
+        <a class="btn" target="_blank" href="https://share.google/wu9tXi6YDlB1fumEQ">Lihat Lokasi</a>
+      </div>
+    </div>
+
+      <!-- Central Batik -->
+    <div class="card">
+      <div class="media" style="background-image:url('photo/Central_batik.jpg')" aria-label="Central Batik"></div>
+      <div class="card pad">
+        <h4>Central Batik</h4>
+        <p>Jl. Pekalipan No.98, Kejaksan, CirebonCentral Batik Trusmi, Blok A No18, Jl. Otto Iskandardinata, Kec. Weru</p>
+        <a class="btn" target="_blank" href="https://share.google/y20v7wBDeLXuPbDgQ">Lihat Lokasi</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<script>
+// === BATIK CARD CLICK HANDLER ===
+document.querySelectorAll('.batik-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const modalId = card.getAttribute('data-modal');
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.add('show');
+  });
+});
+
+// === CLOSE BUTTON HANDLER ===
+document.querySelectorAll('.modal .close').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.modal').classList.remove('show');
+  });
+});
+
+closes.forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.modal').classList.remove('show');
+  });
+});
+
+// klik luar modal = tutup
+modals.forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('show');
+  });
+});
+
+</script>
+<!-- KATEGORI BUDAYA -->
+<section id="kategori" class="reveal">
+         <img src="overlayss.png" alt="hiasan" class="hiasan left">
+<img src="overlayss.png" alt="hiasan" class="hiasan right">
+
+  <h3 class="section-title">KATEGORI BUDAYA Lainnya</h3>
+  <div class="kategori-budaya">
+  <a href="sejarah.html" class="box">
+    <span>SEJARAH</span>
+    <img src="photo/kesepuhan.png" alt="Sejarah">
+  </a>
+  <a href="kuliner.html" class="box">
+    <span>KULINER</span>
+    <img src="photo/empal_gentong.png" alt="Kuliner">
+  </a>
+  <a href="tradisi.html" class="box">
+    <span>TRADISI</span>
+    <img src="galeri/event.png" alt="Tradisi">
+  </a>
+  <a href="seni.html" class="box">
+    <span>SENI</span>
+    <img src="photo/tari_kelana.png" alt="Seni">
+  </a>
+</div>
+</section>
+  <!-- PETA -->
+  <section id="peta" class="reveal">
+        <img src="overlayss.png" alt="hiasan" class="hiasan budaya">
+
+    <h3 class="section-title">PETA CIREBON</h3>
+    <iframe class="map" loading="lazy" allowfullscreen
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63340.55243832434!2d108.5102654!3d-6.7261432!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6ee3f1c8e8a1f1%3A0x301e8f1fc28b1a0!2sCirebon!5e0!3m2!1sid!2sid!4v1692970000000"></iframe>
+  </section>
+
+
+  <footer class="reveal">
+    <img src="photo/logo.png" alt="Logo" style="height:36px;opacity:.7"/>
+    <div style="margin-top:8px;font-weight:700;color:#35576d">JELAJAHI WARISAN CIREBON</div>
+  </footer>
+
+  <script>
+// HAMBURGER + CLOSE
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('active'); // ubah jadi X
+});
+
+// Optional: auto close menu kalau klik link
+document.querySelectorAll('#mobileMenu a').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('active');
+  });
+});
+
+
+    // REVEAL animasi
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      })
+    },{threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+// Tambahkan nav active state untuk Dashboard
+
+const dashboardLink = document.querySelector('.nav a[href="dashboard.html"]');
+if (window.location.pathname.includes("dashboard.html")) {
+  links.forEach(a => a.classList.remove('active'));
+  if (dashboardLink) dashboardLink.classList.add('active');
+}
+
+  </script>
+</body>
+</html>

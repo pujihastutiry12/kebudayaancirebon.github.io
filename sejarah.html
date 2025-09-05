@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kebudayaan Seni Cirebon</title>
+  <style>
+    :root {
+      --primary: #13324A;
+      --accent: #6FB2FF;
+      --soft: #F2F6FA;
+      --ink: #1b2b38;
+      --radius: 18px;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+
+    * {
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body {
+      width: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, Arial, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      scroll-behavior: smooth;
+    }
+
+    a { text-decoration:none; color:inherit }
+
+    /* === NAVIGATION === */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #edf1f6;
+    }
+    .nav-inner {
+      max-width: 1300px;
+      margin: auto;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand img { height: 48px; width: auto; }
+    .nav-center {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .nav-center ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+    .nav-center a {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 500;
+      transition: background .25s ease;
+    }
+    .nav-center a.active,
+    .nav-center a:hover { background: var(--soft); }
+    .cta .btn {
+      background: #e9f3ff;
+      border: 1px solid #dbeaff;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-weight: 600;
+    }
+    .btn:hover { filter: brightness(.97); }
+
+    /* === HAMBURGER === */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+      width: 28px;
+      height: 22px;
+      justify-content: center;
+    }
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background: #333;
+      border-radius: 2px;
+      transition: all 0.4s ease;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* === MOBILE MENU === */
+    .nav-center.mobile {
+      position: fixed;
+      top: 60px;
+      right: 16px;
+      width: 240px;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.15);
+      display: flex;
+      flex-direction: column;
+      padding: 14px;
+      gap: 12px;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: all .35s ease;
+    }
+    .nav-center.mobile.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .nav-center.mobile a {
+      font-size: 15px;
+      font-weight: 500;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: background .25s ease;
+    }
+    .nav-center.mobile a:hover { background: var(--soft); }
+    .mobile .btn {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-top: 8px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: background 0.3s ease;
+    }
+    .mobile .btn:hover { background: #00448d; color: #13324A; }
+
+    /* === HERO === */
+    .hero {
+      position: relative;
+      height: min(70vh,600px);
+      overflow: hidden;
+    }
+    .hero::before {
+      content:"";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25));
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-caption {
+      position: absolute;
+      top: 50%;
+      left: 5%;
+      transform: translateY(-50%);
+      color: #fff;
+      max-width: 520px;
+    }
+    .hero-caption h1 {
+      font-size: clamp(24px,4vw,44px);
+      font-weight: 800;
+      text-shadow: 0 3px 8px rgba(0,0,0,.9);
+    }
+    .hero-caption p {
+      margin-top: 10px;
+      font-size: 18px;
+      text-shadow: 0 2px 6px rgba(0,0,0,.7);
+    }
+
+    /* === SECTION === */
+    section {
+      max-width: 1300px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      text-align: left;
+      color: var(--primary);
+    }
+
+    /* === GRID & CARD === */
+    .grid { display: grid; gap: 24px; }
+    .grid.two { grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); align-items:center; }
+    .grid.three { grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); }
+
+    .card {
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      background:#fff;
+      overflow:hidden;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .media {
+      width:100%;
+      aspect-ratio:16/10;
+      background:#e9eef5 center/cover no-repeat;
+    }
+    .card.pad {
+      box-shadow:none;
+      background:none;
+      padding:20px;
+    }
+    .card.pad h4 {
+      margin-bottom:10px;
+      font-size:20px;
+      color:var(--primary);
+    }
+    .card.pad p { line-height:1.6; }
+
+    /* === MAP === */
+    .map {
+      width:100%;
+      height:420px;
+      border:0;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    /* === FOOTER === */
+    footer {
+      padding:36px 16px 60px;
+      text-align:center;
+      color:#406076;
+    }
+
+    /* === HIASAN ANIMASI === */
+    .hiasan {
+      position:absolute;
+      z-index:-1;
+      opacity:0.15;
+      pointer-events:none;
+      animation: floatY 6s ease-in-out infinite alternate;
+    }
+    .hiasan.left,
+    .hiasan.budaya,
+    .hiasan.budaya2,
+    .hiasan.budaya3,
+    .hiasan.right {
+      animation: floatX 8s ease-in-out infinite alternate;
+    }
+    @keyframes floatX {
+      0%,100%{transform:translateX(0)}
+      50%{transform:translateX(20px)}
+    }
+    @keyframes floatY {
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(15px)}
+    }
+
+    /* === REVEAL === */
+    .reveal {
+      opacity:0;
+      transform:translateY(24px);
+      transition:600ms ease;
+    }
+    .reveal.is-visible {
+      opacity:1;
+      transform:none;
+    }
+
+    /* === RESPONSIVE === */
+    @media(max-width:900px){
+      .nav-center { display:none; }
+      .cta { display:none; }
+      .hamburger { display:flex; }
+    }
+
+    .kategori-budaya {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.box {
+  position: relative;
+  display: block;
+  height: 150px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform .3s ease;
+  text-decoration: none;
+}
+
+.box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* isi full button */
+  display: block;
+}
+
+.box span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: rgba(0,0,0,0.5); /* overlay hitam transparan */
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+}
+
+.box:hover {
+  transform: translateY(-5px);
+}
+
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand"><img src="photo/logo.png" alt="Logo"></a>
+    <div class="nav-center">
+      <ul>
+        <li><a href="dashboard.html">Beranda</a></li>
+        <li><a class= "active" href="budaya.html">Budaya</a></li>
+        <li><a href="event.html">Event</a></li>
+        <li><a href="galery.html">Galeri</a></li>
+      </ul>
+    </div>
+    <!-- CTA hanya tampil desktop -->
+    <div class="cta"><a class="btn" href="learn.html">Learn More</a></div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="nav-center mobile" id="mobileMenu">
+        <a href="dashboard.html">Budaya</a>
+    <a href="budaya.html">Budaya</a>
+    <a href="event.html">Event</a>
+    <a href="galery.html">Galeri</a>
+    <a class="btn" href="learn.html">Learn More</a> <!-- masuk ke hamburger -->
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <img src="sejarah.png" alt="Sejarah">
+  <div class="hero-caption">
+    <h1 class="title-lg">Sejarah Cirebon</h1>
+    <p class="subtitle">Menelusuri jejak perkembangan Cirebon dari masa kerajaan hingga modern</p>
+  </div>
+</header>
+
+
+<!-- Masa Awal: Tegal Alang-Alang dan Caruban -->
+<section id="asal-usul">
+  <h3 class="section-title">Abad ke-14</h3>
+  <div class="grid two">
+    <div class="card"><div class="media" style="background-image:url('photo/Gapura-Selamat-Datang-Kota-Cirebon.jpg')"></div></div>
+    <div class="card pad">
+      <h4>Tegal Alang-Alang dan Caruban </h4>
+      <p>Pada Awalnya Cirebon adalah sebuah kampung nelayan bernama Tegal Alang-Alang berkembang di pesisir utara Jawa. Lokasinya yang strategis membuat kampung ini menjadi tempat persinggahan para pedagang, termasuk dari Arab, Gujarat, dan China. Pada tahun 1445, Kampung ini dikembangkan oleh Ki Gedeng Alang-alang atau Ki Danusela. Berdasarkan beberapa sumber sejarah, beliau merupakan Kuwu (kepala desa) pertama di Tegal Alang-Alang. Kemudiaan, karena banyaknya percampuran suku bangsa, agama, dan budaya di pedukuhan ini, Tegal Alang-Alang kemudian dikenal dengan nama "Caruban".</p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ASAL USUL NAMA CIREBON -->
+<section id="Asal-nama-crb">
+  <h3 class="section-title">Awal Mula Caruban</h3>
+  <div class="grid two">
+    <div class="card pad">
+      <h4>Asal-usul Nama Caruban</h4>
+      <p>Berdasarkan naskah kuno Purwaka Tjaruban Nagari, Cirebon awalnya merupakan sebuah kampung kecil yang disebut Caruban, yang berarti "campuran" atau "persatuan". Nama ini diberikan karena wilayah tersebut menjadi tempat bertemunya berbagai bangsa, seperti Jawa, Sunda, Tionghoa, dan Arab, yang membawa serta budaya, agama, dan adat istiadat yang beragam.</p>
+    </div>
+    <div class="card"><div class="media" style="background-image:url('photo/Pelabuhan-Cirebon-Dulu.jpg')"></div></div>
+  </div>
+</section>
+<!-- ASAL USUL NAMA Cirebon -->
+<section id="asal-usul">
+  <h3 class="section-title">Asal-Usul Nama Cirebon </h3>
+  <div class="grid two">
+    <div class="card"><div class="media" style="background-image:url('photo/Kapal_tua_pelabuhan_Cirebon.jpg')"></div></div>
+    <div class="card pad">
+      <h4>Cirebon, Cai dan Rebon</h4>
+      <p> Perubahan nama dari "Caruban" menjadi "Cirebon" ini karena faktor mata pencaharian masyarakat lokal. Masyarakat pesisir Cirebon kala itu sangat mengandalkan hasil laut, dan salah satu tangkapan yang paling melimpah adalah udang rebon. Udang-udang kecil ini kemudian diolah menjadi terasi dan petis, yang menjadi komoditas dagang utama. Proses pengolahan ini menghasilkan air sisa yang dikenal sebagai "cai rebon". Nama Cirebon berasal dari kata Cai (bahasa Sunda/Cirebon yang berarti "air") dan Rebon (udang kecil)</p>
+
+    </div>
+  </div>
+</section>
+<!-- KESULTANAN -->
+<section id="Masa Kesultanan Cirebon">
+  <h3 class="section-title">Awal dan Berdirinya Kesultanan Cirebon</h3>
+  <div class="grid two">
+    <div class="card"><div class="media" style="background-image:url('photo/kesepuhan.png')"></div></div>
+    <div class="card pad">
+      <h4>Masa Kesultanan Cirebon</h4>
+      <p>Sebelum menjadi sebuah kesultanan, Cirebon adalah sebuah pemukiman kecil yang berada di bawah kekuasaan Kerajaan Pajajaran yang bercorak Hindu-Buddha. Kesultanan Cirebon resmi berdiri pada tahun 1430, Oleh Pangeran Cakrabuana, putra Prabu Siliwangi, mendirikan bangunan pertama yang kemudian menjadi cikal bakal Keraton Kasepuhan, yang diberi nama Keraton Pakungwati, diambil dari nama putrinya. Pangeran Cakrabuana adalah tokoh yang dianggap sebagai pendiri Kesultanan Cirebon. Pangeran Cakrabuana memeluk Islam dan diberi gelar Haji Abdullah Iman.</p>    </div>
+  </div>
+</section>
+
+<section id="sunan-gunung-jati">
+  <h3 class="section-title"> Sunan Gunung Jati </h3>
+  <div class="grid two">
+    <div class="card pad">
+      <h4>Sunan Gunung Jati</h4>
+      <p>Pada tahun 1479M,  Pangeran Cakrabuana menyerahkan kekuasaannya kepada keponakannya, Syarif Hidayatullah, yang lebih dikenal sebagai Sunan Gunung Jati.</p>
+      <p>Puncak kejayaan dan peran penting Cirebon dalam penyebaran Islam di Jawa Barat dimulai di bawah kepemimpinan Syarif Hidayatullah.</p>
+      <p> Sunan Gunung Jati adalah seorang ulama sekaligus pemimpin yang bergelar Pandita-Ratu. Ia berperan besar dalam menyebarkan agama Islam dan memutuskan hubungan dengan Kerajaan Pajajaran yang masih menganut Hindu.</p>
+    </div>
+    <div class="card"><div class="media" style="background-image:url('photo/sunan_gunung_jati.jpg')"></div></div>
+  </div>
+</section>
+
+<!-- KESULTANAN -->
+<section id="Masa Kesultanan Cirebon">
+  <h3 class="section-title">Tahun 1482 M</h3>
+  <div class="grid two">
+    <div class="card"><div class="media" style="background-image:url('photo/istana-kesepuhan.jpg')"></div></div>
+    <div class="card pad">
+      <h4>Peristiwa Bersejarah</h4>
+      <p>Sunan Gunung Jati mengambil langkah penting untuk melepaskan diri dari kekuasaan Kerajaan Pajajaran dengan menghentikan pengiriman upeti (pajak) berupa garam dan terasi. Peristiwa ini, yang terjadi pada 2 April 1482 M, menandai berdirinya Kesultanan Cirebon secara resmi dan kini diperingati sebagai hari jadi Kabupaten Cirebon.</p>
+      </div>
+  </div>
+</section>
+
+<!-- MASA KEJAYAAN -->
+<section id="Masa-jaya">
+  <h3 class="section-title"> Masa Kejayaan </h3>
+  <div class="grid two">
+    <div class="card pad">
+      <p>Di bawah kepemimpinan Sunan Gunung Jati, Kesultanan Cirebon mencapai puncak kejayaannya. Cirebon berkembang menjadi pusat penyebaran Islam di Jawa Barat dan pangkalan penting dalam jalur perdagangan dan pelayaran.</p>
+      <p>Sunan Gunung Jati tidak hanya berperan sebagai raja, tetapi juga sebagai pemimpin agama (ulama).</p>
+      <p> Pada tahun 1527, Tentara gabungan Demak, Cirebon, dan Banten di bawah pimpinan Fatahillah berhasil merebut Sunda Kalapa dari Portugis dan mengganti namanya menjadi Jayakarta.</p>
+    </div>
+    <div class="card"><div class="media" style="background-image:url('photo/crb.jpg')"></div></div>
+  </div>
+</section>
+
+<section id="Masa Kesultanan Cirebon">
+  <h3 class="section-title">Wafatnya Sunan Gunung Jati</h3>
+  <div class="grid two">
+    <div class="card"><div class="media" style="background-image:url('photo/siti-inggit.jpg')"></div></div>
+    <div class="card pad">
+      <h4>Tahun 1568 Masehi</h4>
+      <p>Setelah wafatnya Sunan Gunung Jati pada 1568, Fatahillah ditunjuk sebagai sultan, namun ia hanya memerintah selama dua tahun (1568-1570). Kemudian dilanjutkan oleh cucu Sunan Gunung Jati, Panembahan Ratu I (Pangeran Mas). Cirebon dalam kondisi stabil dan kondusif, tidak ada lagi ancaman dari Kerajaan Sunda maupun Banten.</p>
+      </div>
+  </div>
+</section>
+<!-- Masa Kemunduran dan perpecahan -->
+<section id="Masa-perpecahan">
+  <h3 class="section-title">Masa Kemunduran dan perpecahan </h3>
+  <div class="grid two">
+    <div class="card pad">
+      <h4>Tahun 1677 Masehi</h4>
+      <p>Setelah meninggalnya Panembahan Ratu II, terjadi kekosongan kekuasaan dan perpecahan di Kesultanan Cirebon. Kesultanan Cirebon terpecah menjadi tiga yaitu:</p>
+      <p>1. Kesultanan Kasepuhan : Dipimpin oleh Pangeran Martawijaya (Sultan Sepuh I)</p>
+      <p>2. Kesultanan Kanoman : Dipimpin oleh Pangeran Kertawijaya (Sultan Anom I)</p>
+      <p>3. Panembahan Cirebon : Dipimpin oleh Pangeran Wangsakerta.</p>
+    </div>
+    <div class="card"><div class="media" style="background-image:url('photo/Pendopo_Pengada.jpg')"></div></div>
+  </div>
+</section>
+
+<!-- BAT -->
+<section id="bat">
+  <h3 class="section-title">BAT CIREBON</h3>
+  <div class="grid two">
+        <div class="card"><div class="media" style="background-image:url('photo/bat_cirebon_dulu.jpg')"></div></div>
+    <div class="card pad">
+      <h4>Pabrik British American Tobacco (BAT) Cirebon Jawa Barat</h4>
+      <p>Gedung ini dibangun pada tahun 1924 dengan gaya arsitektur Art Deco. Awalnya dimiliki oleh perusahaan bernama Indo Egyptian Cigarettes Company, kemudian bergabung dan sepenuhnya dimiliki oleh British American Tobacco (BAT) pada tahun 1923. Pabrik BAT di Cirebon menghentikan seluruh kegiatan produksinya pada tahun 2010. Setelah berhenti beroperasi, gedung ini menjadi bangunan kosong namun tetap terawat dan memiliki nilai sejarah yang tinggi. Saat ini, Gedung BAT menjadi salah satu destinasi wisata di Kota Tua Cirebon dan sering dijadikan tempat untuk berfoto karena arsitekturnya yang khas bergaya kolonial.</p>
+    </div>
+  </div>
+</section>
+
+<!-- KATEGORI BUDAYA -->
+<section id="kategori" class="reveal">
+         <img src="overlayss.png" alt="hiasan" class="hiasan left">
+<img src="overlayss.png" alt="hiasan" class="hiasan right">
+
+  <h3 class="section-title">KATEGORI BUDAYA Lainnya</h3>
+  <div class="kategori-budaya">
+  <a href="batik.html" class="box">
+    <span>BATIK</span>
+    <img src="photo/buat_batik.png" alt="Batik">
+  </a>
+  <a href="kuliner.html" class="box">
+    <span>KULINER</span>
+    <img src="photo/empal_gentong.png" alt="Kuliner">
+  </a>
+  <a href="tradisi.html" class="box">
+    <span>TRADISI</span>
+    <img src="galeri/event.png" alt="Tradisi">
+  </a>
+  <a href="seni.html" class="box">
+    <span>SENI</span>
+    <img src="photo/tari_kelana.png" alt="Seni">
+  </a>
+</div>
+</section>
+
+
+<!-- GALERI -->
+<section id="galeri">
+  <h3 class="section-title">Galeri Peninggalan Sejarah</h3>
+  <div class="grid two">
+    <div class="card"><div class="media" style="background-image:url('photo/Kutagara_Wadasan.jpg')"></div></div>
+    <div class="card"><div class="media" style="background-image:url('photo/Gapura-Selamat-Datang-Kota-Cirebon.jpg')"></div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="photo/logo.png" alt="Logo" style="height:36px;opacity:.7"/>
+  <div style="margin-top:8px;font-weight:700">Kebudayaan Seni Cirebon</div>
+</footer>
+
+<script>
+  // HAMBURGER + CLOSE
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('active');
+  });
+
+  document.querySelectorAll('#mobileMenu a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('active');
+    });
+  });
+
+  // REVEAL animasi
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    })
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
